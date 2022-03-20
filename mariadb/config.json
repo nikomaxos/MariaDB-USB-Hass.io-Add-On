@@ -28,6 +28,6 @@
     "logins": [{ "username": "str", "password": "str" }],
     "rights": [{ "username": "str", "database": "str" }]
   },
-  "devices": ["/dev/sda1:/dev/sda1:rwm"],
+  "devices": ["/dev/sdb1:/dev/sdb1:rwm"],
   "full_access": true
 }
