@@ -5,18 +5,18 @@
 bashio::log.info "Welcome to modified USB-MYSQL Database sparing your precious uSD cards!"
 
 
-if [[ ! -e /share/usb ]]; then
-    mkdir -p /share/usb
-    chmod -R 0777 /share/usb
+if [[ ! -e /mnt/data/supervisor/share/usb ]]; then
+    mkdir -p /mnt/data/supervisor/share/usb
+    chmod -R 0777 /mnt/data/supervisor/share/usb
     bashio::log.info "Create mount point for USB disk..."
 fi
 
 if [[ -e /dev/sdb1 ]]; then
-    mount /dev/sdb1 /share/usb
+    mount /dev/sdb1 /mnt/data/supervisor/share/usb
     bashio::log.info "Mounting USB disk..."
 fi
 
-MARIADB_DATA=/share/usb/databases
+MARIADB_DATA=/mnt/data/supervisor/share/usb/databases
 NEW_INSTALL=false
 
 # Init mariadb
@@ -29,8 +29,8 @@ else
 fi
 
 # Redirect log output
-rm -f /share/usb/databases/mariadb.err
-ln -s /proc/1/fd/1 /share/usb/databases/mariadb.err
+rm -f /mnt/data/supervisor/share/usb/databases/mariadb.err
+ln -s /proc/1/fd/1 /mnt/data/supervisor/share/usb/databases/mariadb.err
 
 # Start mariadb
 bashio::log.info "Starting MariaDB"
@@ -103,10 +103,10 @@ for right in $(bashio::config "rights|keys"); do
 done
 
 # Generate service user
-if ! bashio::fs.file_exists "/share/usb/secret"; then
-    pwgen 64 1 > /share/usb/secret
+if ! bashio::fs.file_exists "/mnt/data/supervisor/share/usb/secret"; then
+    pwgen 64 1 > /mnt/data/supervisor/share/usb/secret
 fi
-SECRET=$(</share/usb/secret)
+SECRET=$(</mnt/data/supervisor/share/usb/secret)
 mysql -e "CREATE USER 'service'@'172.30.32.%' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
 mysql -e "CREATE USER 'service'@'172.30.33.%' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.32.%' WITH GRANT OPTION;" 2> /dev/null || true
