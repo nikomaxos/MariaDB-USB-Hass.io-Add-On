@@ -11,8 +11,8 @@ if [[ ! -e /share/usb ]]; then
     bashio::log.info "Create mount point for USB disk..."
 fi
 
-if [[ -e /dev/sda1 ]]; then
-    mount /dev/sda1 /share/usb
+if [[ -e /dev/sdb1 ]]; then
+    mount /dev/sdb1 /share/usb
     bashio::log.info "Mounting USB disk..."
 fi
 
